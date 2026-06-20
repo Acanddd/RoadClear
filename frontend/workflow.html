@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>天气退化网络 · 去雪优先调度</title>
+    <script src="https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #06090f;
+            --node-bg: #161b22;
+            --node-border: #30363d;
+            --accent-primary: #58a6ff;
+            --accent-rain: #00d2ff;
+            --accent-snow: #b8c7ff;
+            --accent-success: #3fb950;
+            --text-main: #c9d1d9;
+            --text-dim: #8b949e;
+            --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #app-container {
+            position: relative;
+            width: 1200px;
+            height: 700px;
+            background: radial-gradient(circle at 50% 50%, #10151c 0%, #06090f 100%);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            border-radius: 12px;
+            border: 1px solid #21262d;
+            overflow: hidden;
+        }
+
+        .svg-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .node-rect {
+            fill: var(--node-bg);
+            stroke: var(--node-border);
+            stroke-width: 2;
+            transition: all 0.4s ease;
+        }
+
+        .node-active .node-rect {
+            stroke: var(--accent-primary);
+            fill: rgba(88, 166, 255, 0.1);
+            filter: drop-shadow(0 0 8px rgba(88, 166, 255, 0.5));
+        }
+
+        .node-label {
+            fill: var(--text-main);
+            font-size: 16px;
+            font-weight: 700;
+            pointer-events: none;
+            text-anchor: middle;
+        }
+
+        .node-sublabel {
+            fill: var(--text-dim);
+            font-size: 13px;
+            pointer-events: none;
+            text-anchor: middle;
+        }
+
+        .edge-path {
+            fill: none;
+            stroke: #30363d;
+            stroke-width: 2.2;
+            transition: stroke 0.4s, stroke-dasharray 0.4s;
+        }
+
+        .edge-active {
+            stroke: var(--accent-primary);
+            stroke-dasharray: 6 6;
+            animation: flow 20s linear infinite;
+        }
+
+        @keyframes flow {
+            from { stroke-dashoffset: 500; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        #ui-overlay {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            pointer-events: none;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #58a6ff, #bc8cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .status-bar {
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 16px;
+            color: var(--accent-primary);
+            text-shadow: 0 0 6px rgba(88,166,255,0.3);
+        }
+
+        .preview-box {
+            position: absolute;
+            width: 200px;
+            height: 120px;
+            border: 1px solid #30363d;
+            background: #000;
+            border-radius: 6px;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .rain-anim {
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCI+PGxpbmUgeDE9IjUiIHkxPSIwIiB4Mj0iNCIgeTI9IjEwIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4zKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9zdmc+');
+            animation: rainMove 0.5s linear infinite;
+        }
+
+        @keyframes rainMove {
+            from { background-position: 0 0; }
+            to { background-position: 20px 100px; }
+        }
+
+        .clear-anim {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1a202c, #2d3748);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-success);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        #status-indicator {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            padding: 15px 25px;
+            background: rgba(22, 27, 34, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--accent-primary);
+            border-radius: 12px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 20;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            box-shadow: 0 0 12px var(--accent-primary);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.6; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .preview-label {
+            position: absolute;
+            bottom: 5px;
+            left: 8px;
+            font-size: 12px;
+            color: #ffffffcc;
+            background: rgba(0,0,0,0.6);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <div id="ui-overlay">
+        <h1>天气退化网络工作流</h1>
+        <div class="status-bar" id="system-log">系统就绪: 等待输入关键帧...</div>
+    </div>
+
+    <svg id="workflow-svg" class="svg-canvas" viewBox="0 0 1200 700">
+        <defs>
+            <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#30363d" />
+            </marker>
+            <marker id="arrowhead-active" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#58a6ff" />
+            </marker>
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <g id="edges-group"></g>
+        <g id="nodes-group"></g>
+    </svg>
+
+    <!-- 输入预览 (显示雨动画，代表原始退化视频) -->
+    <div id="input-preview" class="preview-box" style="left: 60px; top: 290px; display: none;">
+        <div class="rain-anim"></div>
+        <div class="preview-label">🌧️ 原始退化视频</div>
+    </div>
+
+    <!-- 输出预览 -->
+    <div id="output-preview" class="preview-box" style="right: 60px; top: 290px; display: none;">
+        <div class="clear-anim">✨ 高清增强输出</div>
+        <div class="preview-label" style="color:var(--accent-success);">Restored Video</div>
+    </div>
+
+    <div id="status-indicator">
+        <div class="dot"></div>
+        <span id="step-text">初始化模块...</span>
+    </div>
+</div>
+
+<script>
+    // 1. 数据结构 —— 注意：去雨子网络(rain_branch) 和 去雪子网络(snow_branch) 调换位置与语义
+    const nodes = [
+        { id: 'input', label: '输入关键帧', sub: 'Input Frames', type: 'io', shape: 'rect' },
+        { id: 'classifier', label: '天气分类器', sub: 'Weather Classifier', type: 'proc', shape: 'diamond' },
+        // 调换后：snow_branch 成为主要激活分支（原先rain_branch位置）
+        { id: 'snow_branch', label: '去雪子网络', sub: 'Desnow Network', type: 'active', shape: 'rect' },
+        { id: 'rain_branch', label: '去雨子网络', sub: 'Derain Network', type: 'idle', shape: 'rect' },
+        { id: 'fog_branch', label: '去雾子网络', sub: 'Dehaze Network', type: 'idle', shape: 'rect' },
+        { id: 'fusion', label: '特征融合层', sub: 'Feature Fusion', type: 'proc', shape: 'rect' },
+        { id: 'enhance', label: '视频增强网络', sub: 'Video Enhancement', type: 'proc', shape: 'rect' },
+        { id: 'output', label: '增强视频输出', sub: 'Enhanced Output', type: 'io', shape: 'rect' }
+    ];
+
+    const edges = [
+        { from: 'input', to: 'classifier' },
+        // 调换分支：分类器连接到snow_branch作为主分支（原先是rain_branch）
+        { from: 'classifier', to: 'snow_branch', label: '检测为: 雪 (P=0.97)' },
+        { from: 'classifier', to: 'rain_branch', label: 'P=0.02' },
+        { from: 'classifier', to: 'fog_branch', label: 'P=0.01' },
+        { from: 'snow_branch', to: 'fusion' },
+        { from: 'rain_branch', to: 'fusion' },
+        { from: 'fog_branch', to: 'fusion' },
+        { from: 'fusion', to: 'enhance' },
+        { from: 'enhance', to: 'output' }
+    ];
+
+    // 2. 使用 dagre 布局 (从左到右)
+    const g = new dagre.graphlib.Graph();
+    g.setGraph({ rankdir: 'LR', nodesep: 70, ranksep: 100 });
+    g.setDefaultEdgeLabel(() => ({}));
+
+    nodes.forEach(n => {
+        g.setNode(n.id, { label: n.label, width: 160, height: 80 });
+    });
+
+    edges.forEach(e => {
+        g.setEdge(e.from, e.to);
+    });
+
+    dagre.layout(g);
+
+    // 3. 渲染逻辑
+    const svg = document.getElementById('workflow-svg');
+    const nodesGroup = document.getElementById('nodes-group');
+    const edgesGroup = document.getElementById('edges-group');
+
+    // 存储连线元素，便于后续激活
+    const edgeElements = {};
+    edges.forEach(edge => {
+        const points = g.edge(edge.from, edge.to).points;
+        if (!points || points.length < 2) return;
+        
+        const lineData = `M ${points[0].x} ${points[0].y} ` + points.slice(1).map(p => `L ${p.x} ${p.y}`).join(' ');
+        
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', lineData);
+        path.setAttribute('class', 'edge-path');
+        path.setAttribute('marker-end', 'url(#arrowhead)');
+        edgesGroup.appendChild(path);
+        edgeElements[`${edge.from}-${edge.to}`] = path;
+
+        // 添加边缘标签
+        if (edge.label) {
+            const mid = points[Math.floor(points.length/2)];
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', mid.x);
+            text.setAttribute('y', mid.y - 10);
+            text.setAttribute('fill', 'var(--text-dim)');
+            text.setAttribute('font-size', '12px');
+            text.setAttribute('text-anchor', 'middle');
+            text.textContent = edge.label;
+            edgesGroup.appendChild(text);
+        }
+    });
+
+    // 存储节点组元素
+    const nodeElements = {};
+    nodes.forEach(node => {
+        const { x, y } = g.node(node.id);
+        const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        group.setAttribute('transform', `translate(${x - 80}, ${y - 40})`);
+        group.setAttribute('id', `node-${node.id}`);
+        
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('width', 160);
+        rect.setAttribute('height', 80);
+        rect.setAttribute('rx', 8);
+        rect.setAttribute('class', 'node-rect');
+        
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('x', 80);
+        label.setAttribute('y', 40);
+        label.setAttribute('class', 'node-label');
+        label.textContent = node.label;
+
+        const sub = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        sub.setAttribute('x', 80);
+        sub.setAttribute('y', 60);
+        sub.setAttribute('class', 'node-sublabel');
+        sub.textContent = node.sub;
+
+        group.appendChild(rect);
+        group.appendChild(label);
+        group.appendChild(sub);
+        nodesGroup.appendChild(group);
+        nodeElements[node.id] = group;
+    });
+
+    // 4. 动画流程控制 —— 现在以“雪”为主要天气类型
+    async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    function activateNode(id) {
+        if (nodeElements[id]) {
+            nodeElements[id].classList.add('node-active');
+        }
+    }
+
+    function activateEdge(from, to) {
+        const key = `${from}-${to}`;
+        if (edgeElements[key]) {
+            edgeElements[key].classList.add('edge-active');
+            edgeElements[key].setAttribute('marker-end', 'url(#arrowhead-active)');
+        }
+    }
+
+    async function runWorkflow() {
+        const log = document.getElementById('system-log');
+        const stepText = document.getElementById('step-text');
+        
+        // 重置所有状态（确保循环播放时干净）
+        nodes.forEach(n => {
+            if (nodeElements[n.id]) {
+                nodeElements[n.id].classList.remove('node-active');
+                nodeElements[n.id].style.opacity = '1';
+            }
+        });
+        edges.forEach(e => {
+            const key = `${e.from}-${e.to}`;
+            if (edgeElements[key]) {
+                edgeElements[key].classList.remove('edge-active');
+                edgeElements[key].setAttribute('marker-end', 'url(#arrowhead)');
+            }
+        });
+        document.getElementById('input-preview').style.display = 'none';
+        document.getElementById('output-preview').style.display = 'none';
+        document.querySelector('.dot').style.background = 'var(--accent-primary)';
+        document.querySelector('.dot').style.boxShadow = '0 0 12px var(--accent-primary)';
+
+        // Step 1: 输入
+        stepText.textContent = "载入原始数据...";
+        log.textContent = ">>> [SYSTEM] 接收视频流关键帧 (雪天场景)...";
+        activateNode('input');
+        document.getElementById('input-preview').style.display = 'block';
+        await sleep(1500);
+
+        // Step 2: 连接到分类器
+        activateEdge('input', 'classifier');
+        await sleep(800);
+        activateNode('classifier');
+        stepText.textContent = "天气特征提取中...";
+        log.textContent = ">>> [CLASSIFIER] 运行天气分类卷积网络...";
+        await sleep(2000);
+
+        // Step 3: 分支决策 —— 检测为雪 (激活snow_branch)
+        stepText.textContent = "分类结果: 雪 (Snow)";
+        log.textContent = ">>> [DECISION] 检测到天气类型为雪，激活去雪分支 ❄️";
+        activateEdge('classifier', 'snow_branch');
+        // 弱化其他两个分支 (rain 和 fog)
+        if (nodeElements['rain_branch']) nodeElements['rain_branch'].style.opacity = '0.3';
+        if (nodeElements['fog_branch']) nodeElements['fog_branch'].style.opacity = '0.3';
+        await sleep(1000);
+        activateNode('snow_branch');
+        await sleep(2000);
+
+        // Step 4: 融合
+        stepText.textContent = "特征空间对齐与融合...";
+        activateEdge('snow_branch', 'fusion');
+        await sleep(800);
+        activateNode('fusion');
+        log.textContent = ">>> [FUSION] 将去雪特征图与原始空间信息融合...";
+        await sleep(1500);
+
+        // Step 5: 增强
+        stepText.textContent = "视频后处理增强...";
+        activateEdge('fusion', 'enhance');
+        await sleep(800);
+        activateNode('enhance');
+        log.textContent = ">>> [ENHANCE] 运行增强网络，优化时序并去噪...";
+        await sleep(2000);
+
+        // Step 6: 输出
+        stepText.textContent = "生成最终视频...";
+        activateEdge('enhance', 'output');
+        await sleep(800);
+        activateNode('output');
+        document.getElementById('output-preview').style.display = 'flex';
+        log.textContent = ">>> [SUCCESS] 任务完成，增强视频已输出 (雪天优化)。";
+        stepText.textContent = "处理完成 ✅";
+        document.querySelector('.dot').style.background = 'var(--accent-success)';
+        document.querySelector('.dot').style.boxShadow = '0 0 14px var(--accent-success)';
+
+        await sleep(7000);
+        // 循环演示
+        runWorkflow();
+    }
+
+    window.onload = () => {
+        runWorkflow();
+    };
+</script>
+</body>
+</html>

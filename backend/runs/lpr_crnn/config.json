@@ -1,0 +1,16 @@
+{
+    "data_dir": "D:\\acanhome\\RoadClear\\CCPD2019\\CCPD_YOLO\\images\\train",
+    "val_dir": null,
+    "val_split": 0.1,
+    "img_height": 48,
+    "img_width": 168,
+    "rnn_hidden": 256,
+    "batch_size": 64,
+    "epochs": 50,
+    "lr": 0.001,
+    "num_workers": 4,
+    "save_dir": "./runs/lpr_crnn",
+    "save_interval": 5,
+    "resume": null,
+    "device": "cuda"
+}

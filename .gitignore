@@ -1,0 +1,106 @@
+# ====================
+# Python
+# ====================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# 虚拟环境
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# ====================
+# 模型权重与大文件（不入库，通过文档说明下载方式）
+# ====================
+# ONNX 模型
+backend/onnx_models/*.onnx
+
+# PyTorch 训练权重
+backend/runs/**/*.pt
+backend/pretrained_weights/*.pth
+backend/app/scheduler/trained_models*/*.pth
+
+# 训练过程产物（图表、日志保留，权重排除）
+# 如需排除全部 runs 目录，取消下面注释
+# backend/runs/
+
+# ====================
+# 运行时生成目录
+# ====================
+backend/app/videos/
+backend/app/videos_processed/
+backend/app/videos_postprocessing/
+backend/app/image_display/
+
+# ====================
+# 测试结果图片（可重新生成）
+# ====================
+backend/app/models/test_results/*.png
+backend/app/models/test_results/*.jpg
+
+# ====================
+# 前端构建产物（有源码可重新构建）
+# ====================
+frontend/assets/
+node_modules/
+frontend/node_modules/
+dist/
+.vite/
+
+# ====================
+# 环境变量与敏感配置
+# ====================
+.env
+.env.local
+.env.*.local
+*.env
+secrets.json
+credentials.json
+
+# ====================
+# 操作系统
+# ====================
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# ====================
+# IDE / 编辑器
+# ====================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ====================
+# 日志
+# ====================
+*.log
+logs/
+
+# ====================
+# 临时文件
+# ====================
+*.tmp
+*.bak
+*.orig

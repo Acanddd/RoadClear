@@ -1,0 +1,52 @@
+{
+  "models": {
+    "aodnet": {
+      "use_onnx": true
+    },
+    "prenet": {
+      "recurrent_iter": 6,
+      "use_onnx": true
+    },
+    "hdcwnet": {
+      "use_gpu": false
+    }
+  },
+  "postprocessing": {
+    "clahe": {
+      "enabled": false,
+      "clip_limit": 1.5,
+      "tile_grid_size": [
+        8,
+        8
+      ]
+    },
+    "unsharp_mask": {
+      "enabled": false,
+      "kernel_size": [
+        5,
+        5
+      ],
+      "sigma": 1.0,
+      "amount": 0.8,
+      "threshold": 5
+    },
+    "denoise": {
+      "enabled": true,
+      "diameter": 5,
+      "sigma_color": 50.0,
+      "sigma_space": 50.0
+    },
+    "dynamic_range": {
+      "enabled": false,
+      "bright_threshold": 230,
+      "slope": 0.6
+    }
+  },
+  "dispatcher": {
+    "fps_threshold": 5.0,
+    "frame_skip_interval": 30,
+    "ema_alpha": 0.1,
+    "enable_multi_label": true,
+    "multi_label_threshold": 0.3
+  }
+}
