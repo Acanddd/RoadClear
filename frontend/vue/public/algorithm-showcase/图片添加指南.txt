@@ -1,0 +1,68 @@
+# 快速添加图片指南
+
+## 图片文件清单
+
+请将以下5张图片放入此目录：
+
+### 1. gradcam.png
+- **用途**: Grad-CAM热力图
+- **建议尺寸**: 800x600 或更大
+- **说明**: 展示模型注意力区域的热力图，红色表示高关注度
+
+### 2. residual-original.png
+- **用途**: 原始退化图（残差对比-左侧）
+- **建议尺寸**: 600x400 或更大
+- **说明**: 包含天气退化的原始输入图像
+
+### 3. residual-diff.png
+- **用途**: 剥离的残差图（残差对比-中间）
+- **建议尺寸**: 600x400 或更大
+- **说明**: 网络提取的退化成分（雨滴、雾霾等）
+
+### 4. residual-enhanced.png
+- **用途**: 增强后清晰图（残差对比-右侧）
+- **建议尺寸**: 600x400 或更大
+- **说明**: 去除退化后的清晰结果
+
+### 5. feature-map.png
+- **用途**: 网络特征图
+- **建议尺寸**: 800x600 或更大
+- **说明**: 卷积神经网络中间层的特征可视化
+
+## 图片要求
+
+- **格式**: PNG（推荐）或 JPG
+- **命名**: 必须严格按照上述文件名
+- **大小**: 建议每张图片不超过2MB
+- **分辨率**: 建议使用高清图片，但不要过大
+
+## 添加方法
+
+### 方法1: 直接复制
+将图片文件直接复制到此目录即可。
+
+### 方法2: 使用命令行
+```bash
+# Windows PowerShell
+Copy-Item "你的图片路径\gradcam.png" -Destination "d:\acanhome\RoadClear\frontend\vue\public\algorithm-showcase\gradcam.png"
+```
+
+## 验证
+
+添加图片后，启动开发服务器：
+```bash
+cd d:\acanhome\RoadClear\frontend\vue
+npm run dev
+```
+
+然后在浏览器中访问"增强算法展示"标签页，检查图片是否正确显示。
+
+## 当前状态
+
+- [ ] gradcam.png
+- [ ] residual-original.png
+- [ ] residual-diff.png
+- [ ] residual-enhanced.png
+- [ ] feature-map.png
+
+添加完成后，请在上方打勾 ✓

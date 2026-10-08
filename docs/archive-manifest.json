@@ -1,0 +1,302 @@
+[
+  {
+    "from": "frontend\\app.py",
+    "to": "archive\\legacy\\frontend\\app.py"
+  },
+  {
+    "from": "backend\\app\\models\\hdcwnet_optimized.py",
+    "to": "archive\\legacy\\backend\\app\\models\\hdcwnet_optimized.py"
+  },
+  {
+    "from": "backend\\app\\models\\hdcwnet_pytorch.py",
+    "to": "archive\\legacy\\backend\\app\\models\\hdcwnet_pytorch.py"
+  },
+  {
+    "from": "frontend\\vue\\src\\components\\add_multi_label.py",
+    "to": "archive\\legacy\\frontend\\vue\\src\\components\\add_multi_label.py"
+  },
+  {
+    "from": "frontend\\vue\\src\\components\\fix_multilabel.py",
+    "to": "archive\\legacy\\frontend\\vue\\src\\components\\fix_multilabel.py"
+  },
+  {
+    "from": "frontend\\vue\\src\\components\\patch_parameter_console.py",
+    "to": "archive\\legacy\\frontend\\vue\\src\\components\\patch_parameter_console.py"
+  },
+  {
+    "from": "frontend\\vue\\src\\components\\ParameterConsole.vue.backup",
+    "to": "archive\\legacy\\frontend\\vue\\src\\components\\ParameterConsole.vue.backup"
+  },
+  {
+    "from": "frontend\\vue\\src\\components\\ParameterConsole_header.txt",
+    "to": "archive\\legacy\\frontend\\vue\\src\\components\\ParameterConsole_header.txt"
+  },
+  {
+    "from": "backend\\convert_aodnet_weights.py",
+    "to": "archive\\legacy\\backend\\convert_aodnet_weights.py"
+  },
+  {
+    "from": "backend\\convert_hdcwnet_to_onnx.py",
+    "to": "archive\\legacy\\backend\\convert_hdcwnet_to_onnx.py"
+  },
+  {
+    "from": "backend\\convert_hdcwnet_v2.py",
+    "to": "archive\\legacy\\backend\\convert_hdcwnet_v2.py"
+  },
+  {
+    "from": "backend\\convert_to_onnx.py",
+    "to": "archive\\legacy\\backend\\convert_to_onnx.py"
+  },
+  {
+    "from": "backend\\test_aodnet_gpu.py",
+    "to": "archive\\legacy\\backend\\test_aodnet_gpu.py"
+  },
+  {
+    "from": "backend\\test_detrac_videos.py",
+    "to": "archive\\legacy\\backend\\test_detrac_videos.py"
+  },
+  {
+    "from": "backend\\test_evaluation_update.py",
+    "to": "archive\\legacy\\backend\\test_evaluation_update.py"
+  },
+  {
+    "from": "backend\\test_hdcwnet_advanced.py",
+    "to": "archive\\legacy\\backend\\test_hdcwnet_advanced.py"
+  },
+  {
+    "from": "backend\\test_hdcwnet_optimize.py",
+    "to": "archive\\legacy\\backend\\test_hdcwnet_optimize.py"
+  },
+  {
+    "from": "backend\\test_hdcwnet_pytorch.py",
+    "to": "archive\\legacy\\backend\\test_hdcwnet_pytorch.py"
+  },
+  {
+    "from": "backend\\test_hdcwnet_tf.py",
+    "to": "archive\\legacy\\backend\\test_hdcwnet_tf.py"
+  },
+  {
+    "from": "backend\\test_onnx_models.py",
+    "to": "archive\\legacy\\backend\\test_onnx_models.py"
+  },
+  {
+    "from": "backend\\test_prenet_gpu.py",
+    "to": "archive\\legacy\\backend\\test_prenet_gpu.py"
+  },
+  {
+    "from": "backend\\test_prenet_integration.py",
+    "to": "archive\\legacy\\backend\\test_prenet_integration.py"
+  },
+  {
+    "from": "backend\\test_quick.py",
+    "to": "archive\\legacy\\backend\\test_quick.py"
+  },
+  {
+    "from": "backend\\test_video_processing.py",
+    "to": "archive\\legacy\\backend\\test_video_processing.py"
+  },
+  {
+    "from": "backend\\test_video_upload.py",
+    "to": "archive\\legacy\\backend\\test_video_upload.py"
+  },
+  {
+    "from": "backend\\demo_test.py",
+    "to": "archive\\legacy\\backend\\demo_test.py"
+  },
+  {
+    "from": "backend\\batch_evaluate.py",
+    "to": "archive\\legacy\\backend\\batch_evaluate.py"
+  },
+  {
+    "from": "backend\\converts",
+    "to": "archive\\legacy\\backend\\converts"
+  },
+  {
+    "from": "backend\\app\\scheduler\\test_multi_label.py",
+    "to": "archive\\legacy\\backend\\app\\scheduler\\test_multi_label.py"
+  },
+  {
+    "from": "backend\\app\\scheduler\\test_weather_classifier.py",
+    "to": "archive\\legacy\\backend\\app\\scheduler\\test_weather_classifier.py"
+  },
+  {
+    "from": "backend\\app\\scheduler\\train_weather_classifier.py",
+    "to": "archive\\legacy\\backend\\app\\scheduler\\train_weather_classifier.py"
+  },
+  {
+    "from": "frontend\\image_display\\generate_demos.py",
+    "to": "archive\\legacy\\frontend\\image_display\\generate_demos.py"
+  },
+  {
+    "from": "backend\\app\\videos",
+    "to": "archive\\legacy\\backend\\app\\videos"
+  },
+  {
+    "from": "backend\\app\\videos_processed",
+    "to": "archive\\legacy\\backend\\app\\videos_processed"
+  },
+  {
+    "from": "backend\\app\\videos_postprocessing",
+    "to": "archive\\legacy\\backend\\app\\videos_postprocessing"
+  },
+  {
+    "from": "AOD-Net-master",
+    "to": "archive\\legacy\\AOD-Net-master"
+  },
+  {
+    "from": "AOD-Net_pytorch-main",
+    "to": "archive\\legacy\\AOD-Net_pytorch-main"
+  },
+  {
+    "from": "PReNet-master",
+    "to": "archive\\legacy\\PReNet-master"
+  },
+  {
+    "from": "backend\\onnx_models",
+    "to": "archive\\legacy\\backend\\onnx_models"
+  },
+  {
+    "from": "backend\\pretrained_weights",
+    "to": "archive\\legacy\\backend\\pretrained_weights"
+  },
+  {
+    "from": "backend\\runs",
+    "to": "archive\\legacy\\backend\\runs"
+  },
+  {
+    "from": "backend\\hdcwnet_saved_model",
+    "to": "archive\\legacy\\backend\\hdcwnet_saved_model"
+  },
+  {
+    "from": "backend\\config",
+    "to": "archive\\legacy\\backend\\config"
+  },
+  {
+    "from": "yolov5s.pt",
+    "to": "archive\\legacy\\yolov5s.pt"
+  },
+  {
+    "from": "yolov5su.pt",
+    "to": "archive\\legacy\\yolov5su.pt"
+  },
+  {
+    "from": "backend\\yolov5su.pt",
+    "to": "archive\\legacy\\backend\\yolov5su.pt"
+  },
+  {
+    "from": "backend\\yolo26n.pt",
+    "to": "archive\\legacy\\backend\\yolo26n.pt"
+  },
+  {
+    "from": "backend\\yolo26s.pt",
+    "to": "archive\\legacy\\backend\\yolo26s.pt"
+  },
+  {
+    "from": "backend\\tests\\check_data_dir.py",
+    "to": "archive\\legacy\\backend\\tests\\check_data_dir.py"
+  },
+  {
+    "from": "backend\\tests\\debug_training.py",
+    "to": "archive\\legacy\\backend\\tests\\debug_training.py"
+  },
+  {
+    "from": "backend\\tests\\diagnosis_report.py",
+    "to": "archive\\legacy\\backend\\tests\\diagnosis_report.py"
+  },
+  {
+    "from": "backend\\tests\\generate_showcase_images.py",
+    "to": "archive\\legacy\\backend\\tests\\generate_showcase_images.py"
+  },
+  {
+    "from": "backend\\tests\\generate_yolo_comparison.py",
+    "to": "archive\\legacy\\backend\\tests\\generate_yolo_comparison.py"
+  },
+  {
+    "from": "backend\\tests\\infer_lpr_crnn.py",
+    "to": "archive\\legacy\\backend\\tests\\infer_lpr_crnn.py"
+  },
+  {
+    "from": "backend\\tests\\lpr_config.py",
+    "to": "archive\\legacy\\backend\\tests\\lpr_config.py"
+  },
+  {
+    "from": "backend\\tests\\lpr_dataset.py",
+    "to": "archive\\legacy\\backend\\tests\\lpr_dataset.py"
+  },
+  {
+    "from": "backend\\tests\\lpr_model.py",
+    "to": "archive\\legacy\\backend\\tests\\lpr_model.py"
+  },
+  {
+    "from": "backend\\tests\\test_aodnet_gpu.py",
+    "to": "archive\\legacy\\backend\\tests\\test_aodnet_gpu.py"
+  },
+  {
+    "from": "backend\\tests\\test_ctc_decode.py",
+    "to": "archive\\legacy\\backend\\tests\\test_ctc_decode.py"
+  },
+  {
+    "from": "backend\\tests\\test_hdcwnet_advanced.py",
+    "to": "archive\\legacy\\backend\\tests\\test_hdcwnet_advanced.py"
+  },
+  {
+    "from": "backend\\tests\\test_hdcwnet_optimize.py",
+    "to": "archive\\legacy\\backend\\tests\\test_hdcwnet_optimize.py"
+  },
+  {
+    "from": "backend\\tests\\test_hdcwnet_pytorch.py",
+    "to": "archive\\legacy\\backend\\tests\\test_hdcwnet_pytorch.py"
+  },
+  {
+    "from": "backend\\tests\\test_hdcwnet_tf.py",
+    "to": "archive\\legacy\\backend\\tests\\test_hdcwnet_tf.py"
+  },
+  {
+    "from": "backend\\tests\\test_lpr_data.py",
+    "to": "archive\\legacy\\backend\\tests\\test_lpr_data.py"
+  },
+  {
+    "from": "backend\\tests\\test_lpr_dataset.py",
+    "to": "archive\\legacy\\backend\\tests\\test_lpr_dataset.py"
+  },
+  {
+    "from": "backend\\tests\\test_model.py",
+    "to": "archive\\legacy\\backend\\tests\\test_model.py"
+  },
+  {
+    "from": "backend\\tests\\test_onnx_models.py",
+    "to": "archive\\legacy\\backend\\tests\\test_onnx_models.py"
+  },
+  {
+    "from": "backend\\tests\\test_prenet_gpu.py",
+    "to": "archive\\legacy\\backend\\tests\\test_prenet_gpu.py"
+  },
+  {
+    "from": "backend\\tests\\test_prenet_integration.py",
+    "to": "archive\\legacy\\backend\\tests\\test_prenet_integration.py"
+  },
+  {
+    "from": "backend\\tests\\test_training_pipeline.py",
+    "to": "archive\\legacy\\backend\\tests\\test_training_pipeline.py"
+  },
+  {
+    "from": "backend\\tests\\test_video_processing.py",
+    "to": "archive\\legacy\\backend\\tests\\test_video_processing.py"
+  },
+  {
+    "from": "backend\\tests\\train_lpr_crnn.py",
+    "to": "archive\\legacy\\backend\\tests\\train_lpr_crnn.py"
+  },
+  {
+    "from": "backend\\tests\\train_ua_detrac_yolo.py",
+    "to": "archive\\legacy\\backend\\tests\\train_ua_detrac_yolo.py"
+  },
+  {
+    "from": "backend\\tests\\verify_fix.py",
+    "to": "archive\\legacy\\backend\\tests\\verify_fix.py"
+  },
+  {
+    "from": "backend\\tests\\visualize_training.py",
+    "to": "archive\\legacy\\backend\\tests\\visualize_training.py"
+  }
+]

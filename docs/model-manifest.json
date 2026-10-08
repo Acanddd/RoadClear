@@ -1,0 +1,308 @@
+[
+  {
+    "id": "aodnet",
+    "path": "models/aodnet.onnx",
+    "original_path": "backend/onnx_models/aodnet.onnx",
+    "bytes": 9311,
+    "sha256": "6d31af3cce4cafa4be9332ded03d88ce8eaed63176aa1c84bea8a4dda4ef7dc9",
+    "provenance": "Migrated local asset; original training/export provenance unverified",
+    "validation": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "aodnet.onnx",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.0776
+    },
+    "checksum_matches": true,
+    "onnx_interface": {
+      "inputs": [
+        {
+          "name": "input",
+          "shape": [
+            "batch_size",
+            3,
+            "height",
+            "width"
+          ],
+          "type": "tensor(float)"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": [
+            "batch_size",
+            3,
+            "height",
+            "width"
+          ],
+          "type": "tensor(float)"
+        }
+      ]
+    },
+    "sample_inference": {
+      "input_shape": [
+        96,
+        128,
+        3
+      ],
+      "output_shape": [
+        96,
+        128,
+        3
+      ],
+      "dtype": "uint8",
+      "finite": true,
+      "seconds": 0.003,
+      "device": "cpu",
+      "output_min": 30,
+      "output_max": 255,
+      "mean_absolute_pixel_change": 39.91441514756944
+    }
+  },
+  {
+    "id": "prenet",
+    "path": "models/prenet.onnx",
+    "original_path": "backend/onnx_models/prenet.onnx",
+    "bytes": 719500,
+    "sha256": "9428521e6cc8dc1677c053a5b90f41147b2b43a6313ff0ca4f00bf3d5b1636a8",
+    "provenance": "Migrated local asset; original training/export provenance unverified",
+    "validation": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "prenet.onnx",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.1129
+    },
+    "checksum_matches": true,
+    "onnx_interface": {
+      "inputs": [
+        {
+          "name": "input",
+          "shape": [
+            "batch_size",
+            3,
+            "height",
+            "width"
+          ],
+          "type": "tensor(float)"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": [
+            "batch_size",
+            3,
+            "height",
+            "width"
+          ],
+          "type": "tensor(float)"
+        },
+        {
+          "name": "intermediate_outputs",
+          "shape": [
+            "batch_size",
+            3,
+            "height",
+            "width"
+          ],
+          "type": "tensor(float)"
+        },
+        {
+          "name": "onnx::Concat_150",
+          "shape": [
+            "Addonnx::Concat_150_dim_0",
+            3,
+            "Addonnx::Concat_150_dim_2",
+            "Addonnx::Concat_150_dim_3"
+          ],
+          "type": "tensor(float)"
+        },
+        {
+          "name": "onnx::Concat_199",
+          "shape": [
+            "Addonnx::Concat_199_dim_0",
+            3,
+            "Addonnx::Concat_199_dim_2",
+            "Addonnx::Concat_199_dim_3"
+          ],
+          "type": "tensor(float)"
+        },
+        {
+          "name": "onnx::Concat_248",
+          "shape": [
+            "Addonnx::Concat_248_dim_0",
+            3,
+            "Addonnx::Concat_248_dim_2",
+            "Addonnx::Concat_248_dim_3"
+          ],
+          "type": "tensor(float)"
+        },
+        {
+          "name": "onnx::Concat_297",
+          "shape": [
+            "Addonnx::Concat_297_dim_0",
+            3,
+            "Addonnx::Concat_297_dim_2",
+            "Addonnx::Concat_297_dim_3"
+          ],
+          "type": "tensor(float)"
+        },
+        {
+          "name": "output",
+          "shape": [
+            "batch_size",
+            3,
+            "height",
+            "width"
+          ],
+          "type": "tensor(float)"
+        }
+      ]
+    },
+    "sample_inference": {
+      "input_shape": [
+        96,
+        128,
+        3
+      ],
+      "output_shape": [
+        96,
+        128,
+        3
+      ],
+      "dtype": "uint8",
+      "finite": true,
+      "seconds": 0.1213,
+      "device": "cpu",
+      "output_min": 0,
+      "output_max": 255,
+      "mean_absolute_pixel_change": 5.745225694444445
+    }
+  },
+  {
+    "id": "transweather",
+    "path": "models/transweather_desnow.onnx",
+    "original_path": "backend/onnx_models/transweather_desnow.onnx",
+    "bytes": 151366042,
+    "sha256": "033e68ac6a12b07d613877f84e7bed5d54d0568c05e29d2776bf7f56b533f933",
+    "provenance": "Migrated local asset; original training/export provenance unverified",
+    "validation": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "transweather_desnow.onnx",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.5285
+    },
+    "checksum_matches": true,
+    "onnx_interface": {
+      "inputs": [
+        {
+          "name": "input",
+          "shape": [
+            "batch_size",
+            3,
+            "height",
+            "width"
+          ],
+          "type": "tensor(float)"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "shape": [
+            "batch_size",
+            3,
+            "height",
+            "width"
+          ],
+          "type": "tensor(float)"
+        }
+      ]
+    },
+    "sample_inference": {
+      "input_shape": [
+        96,
+        128,
+        3
+      ],
+      "output_shape": [
+        96,
+        128,
+        3
+      ],
+      "dtype": "uint8",
+      "finite": true,
+      "seconds": 0.0221,
+      "device": "cpu",
+      "output_min": 119,
+      "output_max": 251,
+      "mean_absolute_pixel_change": 20.314344618055557
+    }
+  },
+  {
+    "id": "weather",
+    "path": "models/weather_classifier.pth",
+    "original_path": "backend/app/scheduler/trained_models_rscm/weather_classifier_mobilenet_v3_small.pth",
+    "bytes": 6224730,
+    "sha256": "0abb1c8452d1d023a417aefaedd5057d87f8f84be521fe7f415b483accac4bd2",
+    "provenance": "Migrated local asset; original training/export provenance unverified",
+    "validation": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "weather_classifier.pth",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.1757
+    },
+    "checksum_matches": true,
+    "interface": "BGR uint8 frame -> fog/rain/snow softmax probabilities"
+  },
+  {
+    "id": "vehicle",
+    "path": "models/vehicle.pt",
+    "original_path": "backend/runs/detrac_yolov5s_4class/weights/best.pt",
+    "bytes": 18501883,
+    "sha256": "506a34d4408a0f5919237e82186910894cd0b9a18a1be15801fd2a680c6abe9c",
+    "provenance": "Migrated local asset; original training/export provenance unverified",
+    "validation": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "vehicle.pt",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.4735
+    },
+    "checksum_matches": true,
+    "interface": "BGR uint8 frame -> bounding boxes, classes and confidence; not OCR"
+  },
+  {
+    "id": "plate",
+    "path": "models/plate.pt",
+    "original_path": "backend/runs/ccpd_yolov8/weights/best.pt",
+    "bytes": 6232163,
+    "sha256": "cd5c0326a6163b6447a7c1b51729f115c7920fa413b057dc7c69a5e100893c76",
+    "provenance": "Migrated local asset; original training/export provenance unverified",
+    "validation": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "plate.pt",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.1708
+    },
+    "checksum_matches": true,
+    "interface": "BGR uint8 frame -> bounding boxes, classes and confidence; not OCR"
+  }
+]

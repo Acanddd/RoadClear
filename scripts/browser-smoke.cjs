@@ -1,0 +1,52 @@
+const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
+const fs = require('fs');
+const path = require('path');
+(async () => {
+  const root = path.resolve(__dirname, '..');
+  const browser = await chromium.launch({channel:'msedge',headless:true});
+  const page = await browser.newPage({viewport:{width:1440,height:1000}});
+  const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.goto('http://127.0.0.1:5173', {waitUntil:'networkidle'});
+  await page.getByRole('button', {name:'启动系统'}).click();
+  await page.locator('input[type=file]').setInputFiles(path.join(root,'samples/fog.mp4'));
+  const resultPromise = page.waitForResponse(r => r.url().includes('/video/process/') && r.request().method()==='POST');
+  await page.getByRole('button', {name:'开始增强'}).click();
+  const response = await resultPromise;
+  if (!response.ok()) throw new Error(await response.text());
+  const result = await response.json();
+  await page.getByRole('tab', {name:'视频增强'}).click();
+  const videos = page.locator('video');
+  await videos.first().waitFor();
+  await page.waitForFunction(() => [...document.querySelectorAll('video')].filter(v=>v.src).every(v=>v.readyState>=2), {timeout:30000});
+  await videos.evaluateAll(async vs => {
+    await Promise.all(vs.map(async v => { v.muted=true; await v.play(); }));
+  });
+  await page.waitForFunction(() => [...document.querySelectorAll('video')].every(v=>v.currentTime>0));
+  await videos.evaluateAll(vs=>vs.forEach(v=>v.pause()));
+  await page.screenshot({path:path.join(root,'runtime/browser-smoke.png'),fullPage:true});
+  const playback = await videos.evaluateAll(vs=>vs.map(v=>({src:v.currentSrc,width:v.videoWidth,height:v.videoHeight,readyState:v.readyState,error:v.error?.message})));
+  await page.getByRole('tab', {name:'任务评估'}).click();
+  const evalPromise = page.waitForResponse(r=>r.url().includes('/eval/evaluate/'));
+  await page.getByRole('button', {name:'开始评估'}).click();
+  const evaluation = await evalPromise;
+  if(!evaluation.ok())throw new Error(await evaluation.text());
+  await page.locator('.roadclear-report').waitFor();
+  await page.screenshot({path:path.join(root,'runtime/browser-evaluation.png'),fullPage:true});
+  const status = await (await page.request.get('http://127.0.0.1:5173/models/status')).json();
+  status.models.transweather = {available:false,reason:'test unavailable'};
+  status.models.auto = {available:false,reason:'test unavailable'};
+  await page.route('**/models/status', route=>route.fulfill({json:status}));
+  await page.reload({waitUntil:'networkidle'});
+  await page.getByRole('button', {name:'启动系统'}).click();
+  await page.locator('.video-enhancement .el-select').first().click();
+  const snowOptions = page.getByRole('option').filter({hasText:'TransWeather'});
+  if(await snowOptions.count()!==3)throw new Error('Expected three snow-dependent options');
+  for(const option of await snowOptions.all()) {
+    if(!(await option.getAttribute('class')).includes('is-disabled'))throw new Error('Missing snow option not disabled');
+  }
+  fs.writeFileSync(path.join(root,'runtime/browser-smoke.json'),JSON.stringify({result,errors,playback},null,2));
+  await browser.close();
+  if(errors.length)throw new Error(errors.join('; '));
+  console.log('Browser upload, enhancement and video decoding passed');
+})().catch(e=>{console.error(e);process.exit(1)});

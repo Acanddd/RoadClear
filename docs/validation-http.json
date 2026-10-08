@@ -1,0 +1,187 @@
+{
+  "mode": "http://127.0.0.1:5173",
+  "device": "cpu",
+  "cases": [
+    {
+      "model": "aodnet",
+      "video_id": "7165d954-6930-494a-8bdb-faf091eda3fa",
+      "status": "passed",
+      "seconds": 0.246,
+      "sample_sha256": "749c787b7ee3381ee4929b8ea5d03dc82425dc2bc812fe0033380dea04752e0f",
+      "output_sha256": "4df8278cc2ca78371237d47310ca1bf250085acc9e1e5021d78e08ba7a4493ed",
+      "video_info": {
+        "fps": 6.0,
+        "frames": 3,
+        "width": 128,
+        "height": 96
+      },
+      "evaluation": {
+        "before": {
+          "mean_confidence": 0.0,
+          "high_conf_count": 0,
+          "temporal_stability": 1.0,
+          "total_detections": 0,
+          "license_plate_count": 0
+        },
+        "after": {
+          "mean_confidence": 0.0,
+          "high_conf_count": 0,
+          "temporal_stability": 1.0,
+          "total_detections": 0,
+          "license_plate_count": 0
+        },
+        "image_quality": {
+          "detection_count_change_rate": 0.0,
+          "contrast_gain": 0.6479950208944607,
+          "noise_suppression_rate": -1.7047836465344341
+        },
+        "performance": {
+          "base_fps": 6.376576925376856,
+          "enhanced_fps": 6.665179266660946
+        }
+      }
+    },
+    {
+      "model": "prenet",
+      "video_id": "6e56ed09-27f4-4be7-a1dd-4ffb58e776db",
+      "status": "passed",
+      "seconds": 0.577,
+      "sample_sha256": "a22eef8702c0754d8fb6af47cc0cbb0f852fb1a34fee94ee0d3db347c32ef3c9",
+      "output_sha256": "6675db8d0fe60bced90470f8f1101740ab436dc17b05135bc800d97c6023df72",
+      "video_info": {
+        "fps": 6.0,
+        "frames": 3,
+        "width": 128,
+        "height": 96
+      },
+      "evaluation": {
+        "before": {
+          "mean_confidence": 0.6576892617675993,
+          "high_conf_count": 9,
+          "temporal_stability": 1.0,
+          "total_detections": 18,
+          "license_plate_count": 0
+        },
+        "after": {
+          "mean_confidence": 0.8028039187192917,
+          "high_conf_count": 12,
+          "temporal_stability": 1.0,
+          "total_detections": 12,
+          "license_plate_count": 0
+        },
+        "image_quality": {
+          "detection_count_change_rate": -0.3333333333333333,
+          "contrast_gain": 0.0,
+          "noise_suppression_rate": 0.045066593163405964
+        },
+        "performance": {
+          "base_fps": 6.821511303577537,
+          "enhanced_fps": 6.683826704791429
+        }
+      }
+    },
+    {
+      "model": "transweather",
+      "video_id": "dfd7a15d-8a0f-4aac-9190-8e8d8c9d1469",
+      "status": "passed",
+      "seconds": 0.273,
+      "sample_sha256": "ae41edeead8ef14c9bce043a9364b68e8d8e413d5c975cf0dcbd3b6832910a00",
+      "output_sha256": "159c9a65a5a1581d53fb659bdffca04c69b249346641b15701f198a8346da5ec",
+      "video_info": {
+        "fps": 6.0,
+        "frames": 3,
+        "width": 128,
+        "height": 96
+      },
+      "evaluation": {
+        "before": {
+          "mean_confidence": 0.0,
+          "high_conf_count": 0,
+          "temporal_stability": 1.0,
+          "total_detections": 0,
+          "license_plate_count": 0
+        },
+        "after": {
+          "mean_confidence": 0.0,
+          "high_conf_count": 0,
+          "temporal_stability": 1.0,
+          "total_detections": 0,
+          "license_plate_count": 0
+        },
+        "image_quality": {
+          "detection_count_change_rate": 0.0,
+          "contrast_gain": -0.6192261762598519,
+          "noise_suppression_rate": 0.8667620648104832
+        },
+        "performance": {
+          "base_fps": 7.106544697332952,
+          "enhanced_fps": 7.057577175087245
+        }
+      }
+    }
+  ],
+  "models": {
+    "aodnet": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "aodnet.onnx",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.0404
+    },
+    "prenet": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "prenet.onnx",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.1003
+    },
+    "transweather": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "transweather_desnow.onnx",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.5248
+    },
+    "weather": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "weather_classifier.pth",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.1018
+    },
+    "vehicle": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "vehicle.pt",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.3269
+    },
+    "plate": {
+      "available": true,
+      "state": "available",
+      "reason": null,
+      "device": "cpu",
+      "file": "plate.pt",
+      "provenance": "unverified original training/export provenance",
+      "load_and_smoke_seconds": 0.1674
+    },
+    "auto": {
+      "available": true,
+      "reason": null
+    },
+    "simple": {
+      "available": true,
+      "reason": null
+    }
+  }
+}
