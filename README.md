@@ -155,18 +155,6 @@ Supply the six files in `models/` and verify SHA-256 values against the [model m
 
 See the [local setup guide (Chinese)](https://github.com/Acanddd/RoadClear/blob/archive/local-reproduction-20261008/docs/LOCAL_SETUP.zh-CN.md) for detailed installation, APIs, configuration, and troubleshooting.
 
-## 验证范围与限制 / Validation and limitations
-
-- 2026-10-08 复查通过后端 10 项回归测试、三类天气短样例处理链路及 Vue 构建；属于功能验证，不是论文指标复现。  
-  The 2026-10-08 recheck passed 10 backend regression tests, short-sample workflows for three weather types, and the Vue build: functional validation, not reproduction of thesis metrics.
-- 无标注评估中的置信度、检测数量与图像质量统计是代理指标，不能代替有真实标注的 precision、recall 或 mAP。  
-  Unlabelled confidence, detection counts, and image-quality statistics are proxies, not substitutes for precision, recall, or mAP measured against ground truth.
-- 当前 TransWeather ONNX 使用不超过 256 像素、64 倍数的方形输入，再恢复原尺寸；与原论文实验的预处理不能直接等同。  
-  The current TransWeather ONNX adapter uses square inputs up to 256 pixels in multiples of 64 before restoring original dimensions; its preprocessing is not directly equivalent to the thesis experiments.
-- 恢复版为单进程、单任务本机演示，无生产部署、数据库任务队列或实时性能保证。Docker 配置已提供，但 Docker/GPU 尚未完成运行验收。  
-  The recovered version is a single-process, single-task local demo without production deployment, a database-backed job queue, or guaranteed real-time throughput. Docker configuration is provided, but Docker/GPU execution is not validated.
-
-验证记录 / Validation records: [2026-10-08 recheck](https://github.com/Acanddd/RoadClear/blob/archive/local-reproduction-20261008/docs/REPRODUCTION_2026-10-08.md) · [Earlier validation report](https://github.com/Acanddd/RoadClear/blob/archive/local-reproduction-20261008/docs/VALIDATION_REPORT.md)
 
 ## 后续方向 / Future work
 
