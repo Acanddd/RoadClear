@@ -6,6 +6,9 @@ RoadClear 是我的软件工程本科毕业设计：将天气识别、深度学�
 
 RoadClear is my undergraduate Software Engineering capstone project. It integrates weather recognition, deep-learning image restoration, video processing, and object detection into an interactive web application, exploring enhancement of road surveillance footage under fog, rain, and snow and its effects on downstream detection.
 
+> **版本说明 / Repository versions**  
+> `master` 保留原始毕业设计代码；[本地复现分支](https://github.com/Acanddd/RoadClear/tree/archive/local-reproduction-20261008)包含恢复后的代码、安装脚本和验证记录。下方截图来自恢复版，不代表 `master` 可直接运行。  
+> `master` preserves the original capstone code. The [local reproduction branch](https://github.com/Acanddd/RoadClear/tree/archive/local-reproduction-20261008) contains the recovered code, setup scripts, and validation records. Screenshots show the recovered version, not proof that `master` runs out of the box.
 
 ## 项目目标 / Motivation
 
@@ -41,6 +44,60 @@ HDCWNet was explored but discarded because its video results were unsatisfactory
   → 编码、对比与下载 / Encode, compare, and download
   → 车辆与车牌检测评估 / Vehicle and licence-plate evaluation
 ```
+
+## 毕业设计实验 / Capstone experiments
+
+以下为原毕业设计报告的实验结果，与恢复版的功能测试分开呈现。论文第 4.4 节使用 DETRAC 视频生成合成雨、雾、雪退化，每类随机选择 20 个片段，每段 5 秒、25 FPS，总计 7,500 帧。原始清晰视频与退化视频分别作为参考上界和比较基线。这些结果不能直接推广为真实天气视频或当前 ONNX 恢复版的性能保证。
+
+The following results belong to the original capstone experiments, separately from the recovered application's functional tests. Thesis Section 4.4 describes synthetic rain, fog, and snow applied to DETRAC footage: 20 randomly selected clips per weather type, each lasting 5 seconds at 25 FPS, totalling 7,500 frames. Clean footage provides a reference upper bound, while degraded footage is the comparison baseline. These results do not guarantee performance on real weather footage or the current recovered ONNX implementation.
+
+### 核心检测结果 / Selected detection results
+
+| 天气与模型 / Weather and model | 指标 / Metric | 退化输入 / Degraded | 增强后 / Enhanced | 相对提升 / Relative gain |
+| --- | --- | ---: | ---: | ---: |
+| 雨 / Rain · PReNet | mAP@0.95 | 0.0736 | 0.1680 | +128.18% |
+| 雾 / Fog · AOD-Net | 小目标召回率 / Small-object recall | 0.4667 | 0.6123 | +31.19% |
+| 雪 / Snow · TransWeather | 高置信度检测数 / High-confidence detections | 596.4 | 650.1 | +9.01% |
+| 雪 / Snow · TransWeather | 大目标召回率 / Large-object recall | 0.7646 | 0.8435 | +10.32% |
+
+来源：论文第 4.4 节、表 4-12 与 4-13，答辩 PPT 第 18 页。提升百分比采用论文报告值，相对于退化输入计算，不是百分点。检测数量为实验汇总均值，因此可含小数；它不等同于检测准确率。
+
+Sources: thesis Section 4.4, Tables 4-12 and 4-13, and defence slide 18. Gains are the reported relative changes from degraded inputs, not percentage-point changes. Detection counts are aggregated experimental averages and may be fractional; they are not detection accuracy.
+
+天气分类在 DAWN 测试集上的雨天召回率，从单标签决策的 59.00% 提升到阈值式多天气推断的 75.50%，增加 **16.50 个百分点**。论文使用 0.3 概率阈值，可触发多个天气标签及串联增强；这里不将它描述为重新训练的独立多标签网络。
+
+On the DAWN test set, rain recall increased from 59.00% with single-label decisions to 75.50% with threshold-based multi-weather inference, a gain of **16.50 percentage points**. The thesis uses a probability threshold of 0.3 to activate multiple weather labels and cascaded restoration; this does not imply a separately trained multi-label network. Source: thesis Tables 4-5 and 4-6.
+
+### 原实验视觉对比 / Original experimental comparisons
+
+以下图片直接取自答辩 PPT 第 19–20 页，左侧为退化输入，右侧为模型增强结果，属于历史实验素材，并非本次重新运行生成。
+
+Images below were extracted directly from defence slides 19–20. Degraded inputs appear on the left and enhanced outputs on the right. They are historical experiment assets, not outputs generated during this documentation update.
+
+<details>
+<summary>雾 / Fog · AOD-Net</summary>
+
+![雾天增强前后对比 / Fog before and after AOD-Net](docs/research/fog-comparison.jpeg)
+
+</details>
+
+<details>
+<summary>雨 / Rain · PReNet</summary>
+
+![雨天增强前后对比 / Rain before and after PReNet](docs/research/rain-comparison.jpeg)
+
+</details>
+
+<details>
+<summary>雪 / Snow · TransWeather</summary>
+
+![雪天增强前后对比 / Snow before and after TransWeather](docs/research/snow-comparison.jpeg)
+
+</details>
+
+实验也揭示了局限：图像质量代理指标与下游检测收益可能不一致；去雪对大目标的改善比小目标更明显。由此，评估需要结合有标注的检测指标，不能仅凭视觉效果或单一像素统计判断。
+
+The experiments also highlight limitations: image-quality proxies may disagree with downstream detection gains, and desnowing benefits large objects more than small ones. Evaluation therefore needs labelled detection metrics rather than visual appearance or a single pixel statistic alone.
 
 ## 页面截图 / Application screenshots
 
