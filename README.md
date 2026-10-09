@@ -6,9 +6,6 @@ RoadClear 是我的软件工程本科毕业设计：将天气识别、深度学�
 
 RoadClear is my undergraduate Software Engineering capstone project. It integrates weather recognition, deep-learning image restoration, video processing, and object detection into an interactive web application, exploring enhancement of road surveillance footage under fog, rain, and snow and its effects on downstream detection.
 
-> **版本说明 / Repository versions**  
-> `master` 保留原始毕业设计代码；[本地复现分支](https://github.com/Acanddd/RoadClear/tree/archive/local-reproduction-20261008)包含恢复后的代码、安装脚本和验证记录。下方截图来自恢复版，不代表 `master` 可直接运行。  
-> `master` preserves the original capstone code. The [local reproduction branch](https://github.com/Acanddd/RoadClear/tree/archive/local-reproduction-20261008) contains the recovered code, setup scripts, and validation records. Screenshots show the recovered version, not proof that `master` runs out of the box.
 
 ## 项目目标 / Motivation
 
