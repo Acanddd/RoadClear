@@ -1,0 +1,135 @@
+# RoadClear
+
+### 天气感知道路视频增强系统 · Weather-aware Road Video Enhancement
+
+RoadClear 是我的软件工程本科毕业设计：将天气识别、深度学习图像复原、视频处理和目标检测整合到交互式 Web 系统，探索雾、雨、雪条件下道路监控画面的增强及其对下游检测的影响。
+
+RoadClear is my undergraduate Software Engineering capstone project. It integrates weather recognition, deep-learning image restoration, video processing, and object detection into an interactive web application, exploring enhancement of road surveillance footage under fog, rain, and snow and its effects on downstream detection.
+
+> **版本说明 / Repository versions**  
+> `master` 保留原始毕业设计代码；[本地复现分支](https://github.com/Acanddd/RoadClear/tree/archive/local-reproduction-20261008)包含恢复后的代码、安装脚本和验证记录。下方截图来自恢复版，不代表 `master` 可直接运行。  
+> `master` preserves the original capstone code. The [local reproduction branch](https://github.com/Acanddd/RoadClear/tree/archive/local-reproduction-20261008) contains the recovered code, setup scripts, and validation records. Screenshots show the recovered version, not proof that `master` runs out of the box.
+
+## 项目目标 / Motivation
+
+恶劣天气会遮挡道路细节，也可能影响车辆与车牌检测。项目不仅对比增强前后画面，还将结果送入检测与评估流程：看起来更清晰，不一定意味着检测更准确。
+
+Adverse weather obscures road details and can affect vehicle and licence-plate detection. The project compares original and enhanced footage and evaluates downstream detection: clearer-looking images do not necessarily yield more accurate detections.
+
+## 功能与技术 / Features and stack
+
+| 模块 / Module | 内容 / Description |
+| --- | --- |
+| 天气识别 / Weather recognition | MobileNetV3 Small 分类与周期性调度 / Classification and periodic weather-based routing |
+| 去雾 / Dehazing | AOD-Net：集成已有模型 / Integration of an existing model |
+| 去雨 / Deraining | PReNet：集成已有模型 / Integration of an existing model |
+| 去雪 / Desnowing | TransWeather：基于 Snow100K 自行训练专用权重 / Task-specific weights trained on Snow100K |
+| 视频处理 / Video processing | OpenCV、FFmpeg：上传、逐帧增强、编码、预览、下载 / Upload, frame-wise enhancement, encoding, preview, download |
+| 下游检测 / Downstream detection | YOLO 系列车辆与车牌检测、增强前后对比 / YOLO-based vehicle and licence-plate detection with before/after comparison |
+| Web 系统 / Web application | Vue 3、Element Plus、FastAPI、REST API |
+| 恢复版推理 / Recovered inference | PyTorch、ONNX Runtime，本地 CPU 流程 / Locally verified CPU workflow |
+
+HDCWNet 曾用于去雪实验，但因视频效果不理想被弃用，最终采用 TransWeather。部分旧文件名仍含 `hdcwnet`，不代表最终使用该网络。
+
+HDCWNet was explored but discarded because its video results were unsatisfactory. TransWeather is the final desnowing approach; legacy filenames containing `hdcwnet` do not identify the final model.
+
+## 处理流程 / Processing pipeline
+
+```text
+上传视频 / Upload video
+  → 解码与验证 / Decode and validate
+  → 天气识别或手动选择 / Classify weather or select a model
+  → AOD-Net (fog) / PReNet (rain) / TransWeather (snow)
+  → 可选后处理 / Optional post-processing
+  → 编码、对比与下载 / Encode, compare, and download
+  → 车辆与车牌检测评估 / Vehicle and licence-plate evaluation
+```
+
+## 页面截图 / Application screenshots
+
+### 视频增强 / Video enhancement
+
+选择模型、上传视频、观察状态并对比处理结果。截图来自之前本地浏览器验证的短样例；日志中的 FPS 不是端到端性能基准。
+
+Select a model, upload footage, inspect status, and compare outputs. This screenshot comes from earlier local browser validation using a short sample; logged FPS is not an end-to-end benchmark.
+
+![视频增强页面 / Video enhancement interface](docs/screenshots/video-enhancement.png)
+
+### 任务评估 / Task evaluation
+
+对比检测统计与图像质量代理指标，导出 JSON 报告。截图中的零检测及其他数值只属于该演示输入，不是论文实验结果。
+
+Compare detection statistics and image-quality proxies and export a JSON report. Zero detections and other values shown belong to this demonstration input, not the thesis experiments.
+
+![任务评估页面 / Task evaluation interface](docs/screenshots/task-evaluation.png)
+
+## 我的工作 / My contribution
+
+- **系统设计与集成：** 将天气分类、复原、视频处理、检测与 Web 交互连接起来。  
+  **System design and integration:** connected weather classification, restoration, video processing, detection, and web interaction.
+- **模型实验与选择：** 比较去雪方案，弃用 HDCWNet，基于 Snow100K 训练并使用 TransWeather 专用权重。  
+  **Experimentation and model selection:** evaluated desnowing candidates, rejected HDCWNet, and trained task-specific TransWeather weights on Snow100K.
+- **应用开发与评估：** 实现前后端交互、结果对比和检测评估，后续恢复迁移项目并验证功能链路。  
+  **Application development and evaluation:** implemented frontend/backend interaction, output comparison, and detection evaluation; later recovered the migrated project and validated its functional workflow.
+
+本项目基于已有架构开展应用研究与工程集成，不声称原创 AOD-Net、PReNet、TransWeather 或 YOLO 架构。开发过程中借助了 AI 工具。
+
+The project focuses on applied experimentation and engineering integration using existing architectures, not inventing AOD-Net, PReNet, TransWeather, or YOLO. AI tools assisted development.
+
+## 运行与复现 / Running and reproduction
+
+请先切换到复现分支。模型权重未提交 Git，也不会自动下载，仅克隆代码无法完成推理。
+
+Switch to the reproduction branch first. Weights are excluded from Git and are not downloaded automatically; cloning alone is insufficient for inference.
+
+```bash
+git clone https://github.com/Acanddd/RoadClear.git
+cd RoadClear
+git switch archive/local-reproduction-20261008
+```
+
+按照[模型清单](https://github.com/Acanddd/RoadClear/blob/archive/local-reproduction-20261008/docs/model-manifest.json)补齐 `models/` 下六个文件并核对 SHA-256。运行环境：Windows、PowerShell 7、Python 3.12、Node.js ≥22.13、pnpm 11.19.0。
+
+Supply the six files in `models/` and verify SHA-256 values against the [model manifest](https://github.com/Acanddd/RoadClear/blob/archive/local-reproduction-20261008/docs/model-manifest.json). Environment: Windows, PowerShell 7, Python 3.12, Node.js ≥22.13, pnpm 11.19.0.
+
+```powershell
+./scripts/setup.ps1
+./scripts/check.ps1
+./scripts/start.ps1
+# Open http://127.0.0.1:5173
+./scripts/stop.ps1
+```
+
+详细安装、API、配置与排错见[本地运行指南（中文）](https://github.com/Acanddd/RoadClear/blob/archive/local-reproduction-20261008/docs/LOCAL_SETUP.zh-CN.md)。
+
+See the [local setup guide (Chinese)](https://github.com/Acanddd/RoadClear/blob/archive/local-reproduction-20261008/docs/LOCAL_SETUP.zh-CN.md) for detailed installation, APIs, configuration, and troubleshooting.
+
+## 验证范围与限制 / Validation and limitations
+
+- 2026-10-08 复查通过后端 10 项回归测试、三类天气短样例处理链路及 Vue 构建；属于功能验证，不是论文指标复现。  
+  The 2026-10-08 recheck passed 10 backend regression tests, short-sample workflows for three weather types, and the Vue build: functional validation, not reproduction of thesis metrics.
+- 无标注评估中的置信度、检测数量与图像质量统计是代理指标，不能代替有真实标注的 precision、recall 或 mAP。  
+  Unlabelled confidence, detection counts, and image-quality statistics are proxies, not substitutes for precision, recall, or mAP measured against ground truth.
+- 当前 TransWeather ONNX 使用不超过 256 像素、64 倍数的方形输入，再恢复原尺寸；与原论文实验的预处理不能直接等同。  
+  The current TransWeather ONNX adapter uses square inputs up to 256 pixels in multiples of 64 before restoring original dimensions; its preprocessing is not directly equivalent to the thesis experiments.
+- 恢复版为单进程、单任务本机演示，无生产部署、数据库任务队列或实时性能保证。Docker 配置已提供，但 Docker/GPU 尚未完成运行验收。  
+  The recovered version is a single-process, single-task local demo without production deployment, a database-backed job queue, or guaranteed real-time throughput. Docker configuration is provided, but Docker/GPU execution is not validated.
+
+验证记录 / Validation records: [2026-10-08 recheck](https://github.com/Acanddd/RoadClear/blob/archive/local-reproduction-20261008/docs/REPRODUCTION_2026-10-08.md) · [Earlier validation report](https://github.com/Acanddd/RoadClear/blob/archive/local-reproduction-20261008/docs/VALIDATION_REPORT.md)
+
+## 后续方向 / Future work
+
+- PostgreSQL 保存任务与评估结果，任务队列支持后台处理和重试。  
+  Persist jobs and evaluations in PostgreSQL; add background processing and retries through a job queue.
+- 使用真实长视频与标注数据测量精度、时间一致性、延迟及资源占用。  
+  Evaluate labelled, longer videos for accuracy, temporal consistency, latency, and resource usage.
+- 验证 GPU/容器部署，补充自动化测试，优化前端资源体积。  
+  Validate GPU/container deployment, expand automated tests, and reduce frontend bundle size.
+
+## 文档与致谢 / Documentation and acknowledgements
+
+[本科毕业论文 / Undergraduate thesis](https://github.com/Acanddd/RoadClear/blob/archive/local-reproduction-20261008/paper.pdf) · [项目学习指南 / Project study guide](https://github.com/Acanddd/RoadClear/blob/archive/local-reproduction-20261008/PROJECT_MASTERY_GUIDE.md)
+
+感谢相关模型和数据集的原作者。模型、数据及第三方组件遵循各自许可和使用条件；本仓库不另行授予其使用权。
+
+Acknowledgements to the original model and dataset authors. Models, data, and third-party components remain subject to their respective licences and usage conditions; this repository grants no additional rights to them.
